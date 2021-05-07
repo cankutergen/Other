@@ -1,43 +1,45 @@
+from heapq import heappush, heappop, heapify
+
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
+        counts = {}
+        max_heap = []
+        heapify(max_heap)
         
-        # A B C A B C   n = 2
-        # A B C A B C
-        # output => len(tasks)
-        
-        
-        # A A A    n = 2
-        # A I I A I I A
-        # output = 7
-        
-        
-        # A A A B  n = 2
-        # A B I A I I A
-        # output = 7
-        
-        # idle_count = (max_occuring_number - 1) * n
-        
-        # counter = number of max_occuring_number
-        
-        # intervals = (max_occuring_number - 1) * (n + 1) + counter
-        
-        task_counts = {}
-
         for char in tasks:
-            if char not in task_counts:
-                task_counts[char] = 1
+            if char not in counts:
+                counts[char] = 1
             else:
-                task_counts[char] += 1
+                counts[char] += 1
                 
-        char_list = list(task_counts.values())
-        char_list.sort(reverse = True)
-        max_val = char_list[0]
+        for key, value in counts.items():
+            heappush(max_heap, (-value, key))
+            
+        cycles = 0
+        while len(max_heap) > 0:
+            temp = []
+            
+            # try to take task to process
+            for i in range(n + 1):
+                if max_heap:
+                    count, char = heappop(max_heap)
+                    temp.append((char, -count))
         
-        i = 0
-        counter = 0
-        while i < len(char_list) and char_list[i] == max_val:
-            counter += 1
-            i += 1
+            for key, count in temp:
+                count -= 1
+                if count > 0:
+                    heappush(max_heap, (-count, key))
+                    
+            if len(max_heap) == 0:
+                cycles += len(temp)
+            else:
+                cycles += n + 1
+                
+        return cycles
+            
+            
         
-        ret = (max_val - 1) * (n + 1) + counter 
-        return max(ret, len(tasks))
+        
+        
+        
+        
