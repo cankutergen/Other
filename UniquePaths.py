@@ -10,10 +10,6 @@ class Solution:
         if (i, j) in memo:
             return memo[(i, j)]
 
-        if i == height - 1 and j == width - 1:
-            memo[(i, j)] = 1
-            return 1
-
         if j == width - 1 or i == height - 1:
             memo[(i, j)] = 1
             return 1
