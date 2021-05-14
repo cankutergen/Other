@@ -11,11 +11,13 @@ def shortestWayToFormString(source, target):
       if source[i] == remaining[j]:
         subsequence += remaining[j]
         j += 1
+      
+      i += 1
         
     if len(subsequence) == 0:
       return -1
-    else:
-      num_subsequences += 1
-      remaining = remaining[len(subsequence) : ]
+    
+    num_subsequences += 1
+    remaining = remaining[len(subsequence) : ]
       
   return num_subsequences
