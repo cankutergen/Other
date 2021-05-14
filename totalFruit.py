@@ -3,26 +3,27 @@ class Solution:
         if tree is None or len(tree) is 0:
             return 0
         
-        max_number = 1
-        dict = {}
-        i = 0
-        j = 0
-            
-        while j < len(tree):
-            if len(dict) <= 2:
-                dict[tree[j]] = j
-                j += 1
-            
-            if len(dict) > 2:
-                min_index = len(tree) - 1
-                for val in dict.values():
-                    min_index = min(min_index, val)
-                    
-                i = min_index + 1
-                del dict[tree[min_index]]
+        last_fruit = -1
+        second_last_fruit = -1
+        last_fruit_count = 0
+        current_max = 0
+        global_max = 0
         
+        for fruit in tree:
             
-            max_number = max(max_number, j - i)
-            
-        return max_number
+            if fruit == last_fruit or fruit == second_last_fruit:
+                current_max += 1
+            else:
+                current_max = last_fruit_count + 1
+                
+            if fruit == last_fruit:
+                last_fruit_count += 1
+            else:
+                last_fruit_count = 1
+                second_last_fruit = last_fruit
+                last_fruit = fruit
+                        
+            global_max = max(global_max, current_max)
+        
+        return global_max
                 
